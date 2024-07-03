@@ -222,11 +222,57 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 {
   /*this is function to change user password*/
 }
-
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+  // Get old and new passwords from the request body
+  const { oldPassword, newPassword } = req.body;
+  // finf the user by there ID
+  const user = await User.findById(req.user?._id);
+  // check if the old password is correct
+  const checkPassword = await user.isPasswordCorrect(oldPassword);
+  if (!checkPassword) {
+    throw new ApiError(401, "old password is incorrect");
+  }
+  // set the new password
+  user.password = newPassword;
+  // save the user with the new password
+  await user.save({ validateBeforeSave: false });
+  res.json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+{
+  /*this is function to change user avatar*/
+}
+const changeUserAvatar = asyncHandler(async (req, res) => {
+  // Get the path of the uploaded avatar image from the request
+  const localFilePath = req?.file.path;
+  // If the avatar image path is not provided, throw an error
+  if (!localFilePath) {
+    throw new ApiError(400, "avatar image is required");
+  }
+  // Upload the avatar image to Cloudinary and get the result
+  const avatar = await uploadOnCloudinary(localFilePath);
+  if (!avatar) {
+    throw new ApiError(500, "Failed to upload avatar on Cloudinary");
+  }
+  // find the user by there id and update the new avatar
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: { avatar: avatar.url },
+    },
+    {
+      new: true,
+    }
+  ).select("-password");
+  res
+    .status(200)
+    .json(new ApiResponse(200, user, "Avatar image updated successfully"));
+});
 export {
   registerUser,
   loginUser,
   logoutUser,
   refreshAccessToken,
   updateUserDetails,
+  changeCurrentPassword,
+  changeUserAvatar,
 };
