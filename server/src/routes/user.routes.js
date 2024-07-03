@@ -9,6 +9,7 @@ import {
 } from "../controllers/user.controller.js";
 import { upload } from "../middleware/mulder.middleware.js";
 import { jwtVerify } from "../middleware/auth.middleware.js";
+
 const router = Router();
 {
   /*Register Route*/
@@ -30,6 +31,7 @@ router.post("/login", loginUser);
 
 // Change User Avatar Route
 router.post(
+  "/avatar/new",
   jwtVerify,
   upload.fields([{ name: "avatar", maxCount: 1 }]),
   changeUserAvatar
