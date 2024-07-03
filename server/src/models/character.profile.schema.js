@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-
 // fictional character model schema here
 const characterProfileSchema = new Schema(
   {

@@ -243,7 +243,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 }
 const changeUserAvatar = asyncHandler(async (req, res) => {
   // Get the path of the uploaded avatar image from the request
-  const localFilePath = req?.file.path;
+  const localFilePath = req?.files.avatar[0]?.path;
   // If the avatar image path is not provided, throw an error
   if (!localFilePath) {
     throw new ApiError(400, "avatar image is required");
