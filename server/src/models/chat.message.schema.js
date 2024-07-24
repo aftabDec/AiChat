@@ -1,10 +1,11 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 
 // chat message model schema here
-const chatMessageSchema = new model({
+const chatMessageSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   message: {
     type: String,
@@ -17,10 +18,12 @@ const chatMessageSchema = new model({
   character: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "CharacterProfile",
+    required: true,
   },
   timestamp: {
     type: Date,
     default: Date.now,
   },
 });
+
 export const chatMessage = mongoose.model("chatMessage", chatMessageSchema);

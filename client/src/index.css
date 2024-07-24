@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body{
+  background-color: #101010;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just to make sure */
+}
+
+.scrollbar-thumb-custom {
+  scrollbar-color: gray transparent; /* Firefox */
+  scrollbar-width: thin; /* Firefox */
+}
+
+.scrollbar-thumb-custom::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-thumb-custom::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 10rem;
+}
+
+.scrollbar-thumb-custom::-webkit-scrollbar-track {
+  background: transparent; 
+}
+/* Add these styles to your CSS file or a <style> block in your component */
+
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+.scale-95 {
+  transform: scale(0.95);
+}
