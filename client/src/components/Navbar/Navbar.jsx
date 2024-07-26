@@ -1,15 +1,21 @@
 import React from "react";
+import { FaBell, FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   return (
-    <div className="navbar">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Welcome back aftab</h1>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="p-2 rounded bg-dark-primary text-white"
-        />
+    <div className="navbar mx-3 mt-3 min-w-[90%] max-w-[98%] rounded-lg bg-dark-primary">
+      <a className="btn btn-ghost text-xl">Welcome back aftab</a>
+      <div className="navbar bg-dark-primary">
+        <div className="flex-1"></div>
+        <div className="flex-none gap-2">
+          <div className="form-control form-width">
+            <input
+              type="text"
+              placeholder="Search"
+              className="input  input-bordered"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

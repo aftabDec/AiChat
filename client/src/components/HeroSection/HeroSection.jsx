@@ -2,9 +2,24 @@ import React from "react";
 
 const HeroSection = () => {
   return (
-    <div className="p-4 bg-gray-800 text-white rounded-xl shadow-lg mb-4">
-      <h2 className="text-2xl font-bold mb-4">Trending Characters</h2>
-      {/* Add hero section content here */}
+    <div className="flex-1  mt-3 mx-3 ">
+      <div className="hero h-52 rounded-lg bg-dark-primary min-h-80">
+        <div className="hero-content flex-col lg:flex-row">
+          <img
+            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+            className="max-w-sm rounded-lg shadow-2xl"
+          />
+          <div>
+            <h1 className="text-5xl font-bold">Box Office News!</h1>
+            <p className="py-6">
+              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
+              et a id nisi.
+            </p>
+            <button className="btn btn-primary">Get Started</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

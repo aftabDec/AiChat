@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 body{
-  background-color: #101010;
+  background-color: #070707;
+  overflow: hidden;
 }
 .scrollbar-hide::-webkit-scrollbar {
   width: 0px; /* Remove scrollbar space */
@@ -27,23 +28,33 @@ body{
   background: transparent; 
 }
 /* Add these styles to your CSS file or a <style> block in your component */
-
-.transition-all {
-  transition: all 0.2s ease-in-out;
+.form-width input {
+  width: 100%; /* Ensure it always fills its container */
+  padding: 0.5rem; /* Add some padding */
+  
 }
 
-.opacity-100 {
-  opacity: 1;
+/* For screens larger than or equal to 768px */
+@media (min-width: 768px) {
+  .form-width input {
+    font-size: 18px; /* Adjust font size as needed */
+    padding: 10px; /* Adjust padding as needed */
+  }
 }
 
-.opacity-0 {
-  opacity: 0;
+/* For screens smaller than 768px */
+@media (max-width: 767px) {
+  .form-width input {
+    font-size: 14px; /* Adjust font size as needed */
+    padding: 8px; /* Adjust padding as needed */
+  }
+}
+/* Add this to your global CSS file */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-.scale-100 {
-  transform: scale(1);
-}
-
-.scale-95 {
-  transform: scale(0.95);
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -7,15 +7,15 @@ export default {
         // Base colors for dark theme
         // Use these for background, text, and other primary elements
         dark: {
-          primary: "#000000", // Dark background
-          secondary: "#35353b", // Slightly lighter shade for contrast
+          primary: "#111111", // Dark background
+          secondary: "#1A1A1A", // Slightly lighter shade for contrast
           accent: "#ffffff", // White for text and important elements
         },
 
         // Custom colors for accents
         colors: {
-          violet: {
-            DEFAULT: "#845EC2", // Main violet color
+          color: {
+            primary: "#845EC2", // Main violet color
             light: "#B5A3D0", // Lighter shade for hover effects
             dark: "#5A3F8F", // Darker shade for shadows
           },

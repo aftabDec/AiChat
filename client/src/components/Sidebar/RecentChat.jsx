@@ -16,19 +16,19 @@ const RecentChat = () => {
   ];
 
   return (
-    <div className="flex-1 scrollbar-thin scrollbar-thumb-custom overflow-y-auto p-4">
+    <div className="flex-1  mt-10  scrollbar-thin scrollbar-thumb-custom overflow-y-auto ">
       {/* Map through recent chats */}
       {chats.map((chat) => (
         <div
           key={chat.id}
-          className="justify-start border-none hover:bg-slate-800 bg-dark-primary min-w-[13rem] btn mb-3"
+          className="justify-start border-none items-center hover:bg-slate-800 bg-dark-primary min-w-[13rem] max-w-14 btn mb-3"
         >
           {" "}
           {/* Wrap in a div for styling */}
           <img
             src={chat.pic} // Use chat.pic for dynamic image path
             alt={`${chat.name} profile picture`} // Descriptive alt text
-            className="w-9 h-9 rounded-full mr-2 object-cover" // Add styling
+            className="w-9 h-9 rounded-full mr-1 object-cover" // Add styling
           />
           <h1 className="text-md text-gray-50 font-normal">{chat.name}</h1>
         </div>

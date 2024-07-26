@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 const Profile = () => {
   return (
     <>
-      <div className="btn  mx-12 bg-dark-primary border-none right-8 relative min-w-[14rem] min-h-[60px] mt-10 btn-md justify-start">
+      <div className="btn  bg-dark-primary border-none relative min-w-[14rem] min-h-[60px] m-2 btn-md justify-start">
         <div className="avatar placeholder">
           <div className="bg-purple-600 text-neutral-content w-10 rounded-full">
             <span>A</span>
