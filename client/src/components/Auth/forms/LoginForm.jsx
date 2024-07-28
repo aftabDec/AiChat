@@ -2,26 +2,39 @@ import React, { useState } from "react";
 import LoadingIndicator from "../../loading";
 import { FaLock } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
+import useAuth from "../../../hooks/UseAuth/useAuthHook";
+import { useNavigate } from "react-router-dom";
 
-const LoginForm = ({ onNext }) => {
+const LoginForm = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    setError("");
+
+    try {
+      const response = await login({ email, password });
+
       setLoading(false);
-      if (email.trim() === "" || password.trim() === "") {
-        setError("Email and password are required");
+      console.log("response:", response);
+      if (response.success) {
+        console.log("Login successful");
+        onClose(); // Close the form on successful login
       } else {
-        setError("");
-        onNext();
+        console.log("Login failed:", response.message);
+        setError(response.message || "Login failed");
       }
-    }, 500);
+    } catch (err) {
+      console.error("Error:", err); // Log errors
+      setLoading(false);
+      setError("Login failed. Please try again.");
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -39,6 +52,7 @@ const LoginForm = ({ onNext }) => {
             onChange={(e) => setEmail(e.target.value)}
             className="input h-14 w-full pl-10 mt-2 p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
+            required
           />
         </div>
         <div className="my-1 relative">
@@ -49,6 +63,7 @@ const LoginForm = ({ onNext }) => {
             onChange={(e) => setPassword(e.target.value)}
             className="input min-w-96 h-14 w-full pl-10 mt-2 p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your password"
+            required
           />
           <button
             type="button"
@@ -57,7 +72,7 @@ const LoginForm = ({ onNext }) => {
           >
             {showPassword ? "hide" : "show"}
           </button>
-          {error && <p className="text-red-500 absolute text-sm">{error}</p>}
+          {error && <p className="text-zinc-500 absolute text-sm">{error}</p>}
         </div>
 
         <button type="submit" className="btn mt-8 btn-primary">

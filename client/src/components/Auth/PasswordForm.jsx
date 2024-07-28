@@ -3,9 +3,26 @@ import React, { useState } from "react";
 const PasswordForm = ({ onNext }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(""); // Added error state
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password.trim() === "") {
+      setError("Password is required");
+    } else if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+    } else {
+      setError("");
+      try {
+        onNext({ password });
+      } catch (error) {
+        console.error("Error in onNext: password", error);
+      }
+    }
   };
 
   return (
@@ -14,7 +31,7 @@ const PasswordForm = ({ onNext }) => {
         <h2 className="text-xl font-semibold text-white mb-6">
           Create a Secure Password
         </h2>
-        <form className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
             <label
               htmlFor="password"
@@ -25,7 +42,7 @@ const PasswordForm = ({ onNext }) => {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              className="input w-full mt-2 p-3 border  rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input w-full mt-2 p-3 rounded-2xl focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -38,6 +55,7 @@ const PasswordForm = ({ onNext }) => {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
+          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
           <div className="text-gray-400 text-sm">
             <p>Password strength: {password.length < 8 ? "Weak" : "Strong"}</p>
             <ul className="list-disc list-inside mt-2">
@@ -48,7 +66,7 @@ const PasswordForm = ({ onNext }) => {
           </div>
           <button
             type="submit"
-            className="w-full p-3 btn btn-primary text-white rounded-2  transition duration-200"
+            className="w-full p-3 btn btn-primary text-white rounded-2 transition duration-200"
           >
             Continue
           </button>

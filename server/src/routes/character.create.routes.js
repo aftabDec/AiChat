@@ -4,6 +4,8 @@ import { jwtVerify } from "../middleware/auth.middleware.js";
 import {
   changeCharacterAvatar,
   fictionalCharacterProfile,
+  getCharacterProfile,
+  showCharacters,
 } from "../controllers/character.profile.controller.js";
 
 const router = Router();
@@ -14,6 +16,17 @@ router.post(
   jwtVerify,
   upload.fields([{ name: "avatar", maxCount: 1 }]),
   fictionalCharacterProfile
+);
+// Route for getting characters without id
+router.get(
+  "/get",
+  showCharacters // Controller function to get character profile
+);
+// Route for getting character id
+router.get(
+  "/user/:userId",
+  jwtVerify, // JWT authentication middleware
+  getCharacterProfile // Controller function to get character profile
 );
 // Route for updating character avatar
 router.post(

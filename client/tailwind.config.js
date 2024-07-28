@@ -8,8 +8,8 @@ export default {
         // Use these for background, text, and other primary elements
         dark: {
           primary: "#111111", // Dark background
-          secondary: "#1A1A1A", // Slightly lighter shade for contrast
-          accent: "#ffffff", // White for text and important elements
+          secondary: "#181818", // Slightly lighter shade for contrast
+          hover: "#1C1C1C", // White for text and important elements
         },
 
         // Custom colors for accents

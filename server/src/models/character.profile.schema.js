@@ -3,6 +3,11 @@ import mongoose, { Schema } from "mongoose";
 // fictional character model schema here
 const characterProfileSchema = new Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -28,6 +33,7 @@ const characterProfileSchema = new Schema(
       type: Number,
       default: 0,
     },
+
     chats: {
       type: Number,
       default: 0,

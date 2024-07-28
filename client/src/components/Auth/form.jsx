@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import PasswordForm from "./PasswordForm";
 import LoginForm from "./forms/LoginForm";
-const Register = ({ onNext }) => {
+const Register = ({ onNext, onClose }) => {
+  const formRef = useRef();
+  useEffect(() => {
+    const handler = (e) => {
+      if (formRef.current && !formRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
   return (
     <>
       {" "}
-      <div className=" bg-dark-secondary p-6 w-full max-w-md rounded-3xl shadow-lg">
+      <div
+        ref={formRef}
+        className=" bg-dark-secondary p-6 w-full max-w-md rounded-3xl shadow-lg"
+      >
         <h1 className="text-2xl font-semibold text-white mb-6">fictional.ai</h1>
         <form className="flex flex-col items-center" action="">
           <div className="bg-zinc-800 items-center justify-center flex w-full h-14 rounded-2xl">
@@ -29,7 +47,7 @@ const Register = ({ onNext }) => {
           <p className="mx-3 text-center">or sign up with email</p>
           <div className="w-16  h-[1px] my-4 bg-zinc-500"></div>
         </div>
-        <LoginForm />
+        <LoginForm onClose={onClose} /> {/* Pass onClose */}
         <p className="text-center text-sm mt-4">
           by <span className="font-bold">login</span> or{" "}
           <span className="font-bold">registering</span> your'e{" "}

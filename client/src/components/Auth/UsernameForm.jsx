@@ -10,7 +10,11 @@ const UsernameForm = ({ onNext }) => {
     if (username.trim() === "") {
       setError("Username is required");
     } else {
-      onNext();
+      try {
+        onNext({ username });
+      } catch (error) {
+        console.error("Error in onNext: username", error);
+      }
     }
   };
 

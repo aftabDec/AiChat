@@ -45,10 +45,12 @@ const generateAccessAndRefreshToken = async (userId) => {
   /*Register user controller here*/
 }
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, fullName, password } = req.body;
+  const { username, gender, email, fullName, password } = req.body;
   // 1st step is validation
   if (
-    [username, email, password, fullName].some((field) => field?.trim() === "")
+    [username, gender, email, password, fullName].some(
+      (field) => field?.trim() === ""
+    )
   ) {
     throw new ApiError(400, "All fields are required");
   }
@@ -72,6 +74,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // 5th step is to create user
   const user = await User.create({
     username: username.toLowerCase(),
+    gender,
     email,
     fullName,
     password,

@@ -41,6 +41,7 @@ const fictionalCharacterProfile = asyncHandler(async (req, res) => {
       likes,
       chats,
       catchphrases,
+      userId: req.user.id,
     });
     res
       .status(201)
@@ -107,4 +108,43 @@ const changeCharacterAvatar = asyncHandler(async (req, res) => {
     );
 });
 
-export { fictionalCharacterProfile, changeCharacterAvatar };
+const getCharacterProfile = asyncHandler(async (req, res) => {
+  try {
+    const characters = await characterProfile.find({
+      userId: req.params.userId,
+    });
+    res.json(characters);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/* Show characters controller */
+const showCharacters = asyncHandler(async (req, res) => {
+  try {
+    const characters = await characterProfile
+      .find({})
+      .populate("userId", "username")
+      .exec();
+    res.json(
+      new ApiResponse(200, characters, "Characters retrieved successfully")
+    );
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json(
+        new ApiError(
+          500,
+          error.message,
+          "Server error: Unable to retrieve characters"
+        )
+      );
+  }
+});
+export {
+  fictionalCharacterProfile,
+  getCharacterProfile,
+  changeCharacterAvatar,
+  showCharacters,
+};

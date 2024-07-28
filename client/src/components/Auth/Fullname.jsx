@@ -10,7 +10,11 @@ const FullName = ({ onNext }) => {
     if (fullName.trim() === "") {
       setError("fullName is required");
     } else {
-      onNext();
+      try {
+        onNext({ fullName });
+      } catch (error) {
+        console.error("Error in onNext: fullName", error);
+      }
     }
   };
 
@@ -42,7 +46,7 @@ const FullName = ({ onNext }) => {
               htmlFor="fullName"
               className="block text-sm font-medium text-white"
             >
-              Username
+              FullName
             </label>
             <input
               type="text"

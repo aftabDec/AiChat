@@ -9,7 +9,7 @@ dotenv.config({
 });
 app.use(
   cors({
-    origin: process.env.CORSE_ORIGIN,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -22,8 +22,10 @@ app.use(cookie_parser());
 import userRouter from "./routes/user.routes.js";
 import characterRouter from "./routes/character.create.routes.js";
 import chatRouter from "./routes/chat.routes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 // routes declaration
+app.use("/auth", authRoutes);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1", chatRouter);
 app.use("/api/v1/character", characterRouter);

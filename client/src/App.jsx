@@ -1,39 +1,27 @@
 import React, { useState } from "react";
-import { Sidebar, Navbar, HeroSection, Contents } from "./components/index";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Navbar, Sidebar } from "./components"; // Update this line according to your file structure
 import UsernameForm from "./components/Auth/UsernameForm";
-import PasswordForm from "./components/Auth/PasswordForm";
-import Login from "./components/Auth/Login";
+import Chats from "./components/Chats/AllChatsComo/Chats";
+import Contents from "./components/MainContents/Contents";
+import UserCharAllComp from "./components/UserProfile/UserCharAllComp";
 
 function App() {
-  const [showUsernameForm, setShowUsernameForm] = useState(false);
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-
   return (
     <>
-      {/* {showUsernameForm && <UsernameForm />} */}
-      {showUsernameForm && <Login />}
-      {showPasswordForm && <PasswordForm />}
-      <div className="flex h-screen text-dark-accent">
-        <Sidebar />
-        <div className="flex flex-1 flex-col">
-          <Navbar />
-          <Contents />
+      <Router>
+        <div className="flex h-screen text-dark-accent">
+          <Sidebar />
+
+          <div className="flex bg-dark-secondary flex-1 flex-col">
+            <Routes>
+              <Route path="/" element={<Contents />} />
+              <Route path="/chats/:id" element={<Chats />} />
+              <Route path="/users" element={<UserCharAllComp />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-      <div className="fixed bottom-5 right-5 space-y-3">
-        <button
-          className="p-3 bg-blue-500 text-white rounded-full shadow-lg"
-          onClick={() => setShowUsernameForm(!showUsernameForm)}
-        >
-          {showUsernameForm ? "Close Username Form" : "Open Username Form"}
-        </button>
-        <button
-          className="p-3 bg-blue-500 text-white rounded-full shadow-lg"
-          onClick={() => setShowPasswordForm(!showPasswordForm)}
-        >
-          {showPasswordForm ? "Close Password Form" : "Open Password Form"}
-        </button>
-      </div>
+      </Router>
     </>
   );
 }
