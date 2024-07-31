@@ -6,7 +6,7 @@ const UserCharAllComp = () => {
   return (
     <>
       <div className="flex flex-col overflow-y-auto items-center justify-center">
-        <div className=" flex flex-col mt-52">
+        <div className=" flex flex-col">
           <UserProfile />
         </div>
 

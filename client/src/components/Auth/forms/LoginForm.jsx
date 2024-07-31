@@ -2,54 +2,62 @@ import React, { useState } from "react";
 import LoadingIndicator from "../../loading";
 import { FaLock } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
-import useAuth from "../../../hooks/UseAuth/useAuthHook";
-import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../../../redux/UsersSLices/userSlice";
+import axios from "axios";
 const LoginForm = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+ 
 
-  const handleSubmit = async (e) => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const dispatch = useDispatch();
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
     try {
-      const response = await login({ email, password });
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/users/login",
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-      setLoading(false);
-      console.log("response:", response);
-      if (response.success) {
-        console.log("Login successful");
-        onClose(); // Close the form on successful login
-      } else {
-        console.log("Login failed:", response.message);
-        setError(response.message || "Login failed");
-      }
-    } catch (err) {
-      console.error("Error:", err); // Log errors
-      setLoading(false);
-      setError("Login failed. Please try again.");
+      console.log(res.data);
+      onClose();
+      dispatch(setAuthUser(res.data));
+    } catch (error) {
+      console.log(error);
     }
+    setUser({
+      email: "",
+      password: "",
+    });
   };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
     <div className="flex space-y-6 my-2 items-center justify-center">
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={onSubmitHandler} className="flex flex-col">
         <div className="relative">
           <MdAlternateEmail className="absolute left-3 top-[59%] transform -translate-y-1/2 text-gray-400" />
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
             className="input h-14 w-full pl-10 mt-2 p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
             required
@@ -59,8 +67,8 @@ const LoginForm = ({ onClose }) => {
           <FaLock className="absolute left-3 top-[45%] mb transform -translate-y-1/2 text-gray-400" />
           <input
             type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             className="input min-w-96 h-14 w-full pl-10 mt-2 p-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your password"
             required

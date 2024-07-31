@@ -20,6 +20,7 @@ router.post(
 // Route for getting characters without id
 router.get(
   "/get",
+
   showCharacters // Controller function to get character profile
 );
 // Route for getting character id

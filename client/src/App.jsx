@@ -6,6 +6,22 @@ import Chats from "./components/Chats/AllChatsComo/Chats";
 import Contents from "./components/MainContents/Contents";
 import UserCharAllComp from "./components/UserProfile/UserCharAllComp";
 
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const { authState } = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        authState.isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
+
 function App() {
   return (
     <>
@@ -17,7 +33,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Contents />} />
               <Route path="/chats/:id" element={<Chats />} />
-              <Route path="/users" element={<UserCharAllComp />} />
+              <Route path="/users/profile" element={<UserCharAllComp />} />
             </Routes>
           </div>
         </div>

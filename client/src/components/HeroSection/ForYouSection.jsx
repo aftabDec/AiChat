@@ -2,15 +2,20 @@ import React, { useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCharacter } from "../../context/ContextProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetAllCharacterHook } from "../../hooks/ChracterHook/getAllcharacter";
+import { setSelectedCharacter } from "../../redux/characterSlice";
 
 const ForYouSection = () => {
-  const { setSelectedCharacter, getAllCharacterState } = useCharacter();
+  const allCharacters = useGetAllCharacterHook();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const scrollRef = useRef(null);
 
   const handleCharacterClick = (character) => {
-    setSelectedCharacter(character);
+    dispatch(setSelectedCharacter(character));
+
     navigate(`/chats/${character.id}`);
   };
 
@@ -36,7 +41,7 @@ const ForYouSection = () => {
           ref={scrollRef}
           className="flex overflow-x-auto space-x-4 pb-4 mx-2 scrollbar-hide"
         >
-          {getAllCharacterState.map((character) => (
+          {allCharacters.map((character) => (
             <div
               key={character._id}
               onClick={() => handleCharacterClick(character)}
@@ -56,7 +61,10 @@ const ForYouSection = () => {
                 {character.greetings}
               </p>
               <div className="flex justify-between items-center mt-2 text-sm text-gray-400">
-                <span><span className="mr-1">by</span> <span>@</span>{character.userId?.username}</span>
+                <span>
+                  <span className="mr-1">by</span> <span>@</span>
+                  {character.userId?.username}
+                </span>
                 <span>{character.likes}</span>
               </div>
             </div>

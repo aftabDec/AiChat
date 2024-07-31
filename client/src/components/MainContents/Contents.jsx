@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import HeroSection from "../HeroSection/HeroSection";
-import ForYouSection from "../HeroSection/ForYouSection";
+const ForYouSection = React.lazy(() => import("../HeroSection/ForYouSection"));
 import Navbar from "../Navbar/Navbar";
 import C_footer from "../C.fotter";
 import Footer from "../Footer";
@@ -12,13 +12,13 @@ const Contents = () => {
     <div className="flex items-center flex-col h-full w-full max-w-7xl bg-dark-secondary mx-auto overflow-y-auto">
       <Navbar />
       <HeroSection />
-      <ForYouSection />
+      <Suspense fallback={<p>loading</p>}>
+        <ForYouSection />
+      </Suspense>
       <div className="w-full max-w-4xl">
-    
         <ListCarousal />
       </div>
       <C_footer />
-
       <Footer />
     </div>
   );

@@ -6,12 +6,12 @@ import LoadingIndicator from "../loading";
 import FullName from "./Fullname";
 import Birthdayform from "./Birthdayform";
 import Email from "./Email";
-import { useAuth } from "../../context/AuthContext";
+
 
 const Login = ({ onClose }) => {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+
   const [formData, setFormData] = useState({
     fullName: "",
     gender: "",

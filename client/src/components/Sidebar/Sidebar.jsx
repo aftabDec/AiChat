@@ -4,18 +4,20 @@ import { FiPlus } from "react-icons/fi";
 import RecentChat from "./RecentChat";
 import Profile from "./Profile";
 import ProfileOptions from "./ProfileOptions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProfileLogin from "./ProfileLogin";
 import Login from "../Auth/Login"; // Import Login component
 import Register from "../Auth/form";
-import { useAuth } from "../../context/AuthContext";
+
 import api from "../../utils/axiosSetup";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const [showProfileGroup, setShowProfileGroup] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const { authState } = useAuth();
+
   const closeOptionsRef = useRef();
+  const navigate = useNavigate();
   // const fetchData = async () => {
   //   try {
   //     const response = await api.get("/protected-endpoint");
@@ -28,7 +30,7 @@ const Sidebar = () => {
   // useEffect(() => {
   //   fetchData();
   // }, []);
-
+  const { authUser } = useSelector((store) => store.user);
   const profileHandle = () => {
     setShowProfileGroup((prev) => !prev);
   };
@@ -92,7 +94,7 @@ const Sidebar = () => {
           <ProfileOptions onClosed={() => setShowProfileGroup(false)} />
         </div>
         <div className="fixed block bottom-0 mb-8">
-          {authState.isAuthenticated ? (
+          {authUser ? (
             <button type="button" onClick={profileHandle}>
               <Profile /> {/* Display ProfileLogin if authenticated */}
             </button>

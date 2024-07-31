@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import NavbarChat from "../Navbar/NavbarChat";
 import ProfileChat from "../Profile/ProfileChat";
 import InputChat from "../Input/InputChat";
-import MessageChat from "../MessageArea/MessageChat";
+import MessageChatSkeleton from "../MessageArea/MessageChatSkeleton";
+const MessageChat = React.lazy(() => import("../MessageArea/MessageChat"));
 
 const Chats = () => {
   return (
@@ -14,8 +15,9 @@ const Chats = () => {
         {" "}
         <ProfileChat />
       </div>
-
-      <MessageChat />
+      <Suspense fallback={<MessageChatSkeleton />}>
+        <MessageChat />
+      </Suspense>
 
       <InputChat />
     </>

@@ -1,6 +1,10 @@
 import React from "react";
 
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
 const UserProfile = () => {
+  const { authUser } = useSelector((store) => store.user);
   return (
     <>
       {" "}
@@ -9,10 +13,12 @@ const UserProfile = () => {
         <div className="flex flex-col justify-center items-center space-y-1">
           <img
             className="w-24 h-24 rounded-full object-cover"
-            src="/assets/raiden.jpg"
-            alt="Raiden"
+            src={authUser?.data?.user?.avatar}
+            alt=""
           />
-          <p className="text-lg font-semibold">Makima</p>
+          <p className="text-lg font-semibold">
+            {authUser?.data?.user?.fullName}
+          </p>
         </div>
         {/*state for following and followrs*/}
         <div className="flex items-center justify-center space-x-7">

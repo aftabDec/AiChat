@@ -1,9 +1,16 @@
 import React from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import { useCharacter } from "../../../context/ContextProvider";
+import { useCharacterChatHook } from "../../../hooks/ChracterHook/ChatCharacter";
+import { useSelector } from "react-redux";
 
 const NavbarChat = () => {
-  const { selectedCharacter } = useCharacter();
+  useCharacterChatHook();
+  const selectedCharacter = useSelector(
+    (store) => store.char.selectedCharacter
+  );
+
+  const messages = useSelector((store) => store.char.characterMessage);
   return (
     <>
       <header className="flex bg-dark-secondary items-center justify-between p-4 ">
@@ -16,7 +23,8 @@ const NavbarChat = () => {
           <div className="ml-2">
             <h2 className="text-lg font-semibold">{selectedCharacter?.name}</h2>
             <p className="text-sm text-gray-400">
-              <span className="mr-1">by</span><span>@</span>
+              <span className="mr-1">by</span>
+              <span>@</span>
               {selectedCharacter?.userId?.username}
             </p>
           </div>
