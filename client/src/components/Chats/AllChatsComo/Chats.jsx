@@ -19,7 +19,7 @@ const Chats = () => {
         <MessageChat />
       </Suspense>
 
-      <InputChat />
+      {/* <InputChat /> */}
     </>
   );
 };

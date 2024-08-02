@@ -12,16 +12,14 @@ const Profile = () => {
       <div className="avatar placeholder">
         {/* Use user's avatar if available */}
         <div className="bg-purple-600 text-neutral-content w-10 rounded-full">
-          <img src={authUser?.data?.user?.avatar} alt="" />
+          <img src={authUser?.user?.avatar} alt="" />
         </div>
       </div>
       <div className="flex ml-1 flex-col items-center justify-center">
-        <h2 className="text-md font-semibold">
-          {authUser?.data?.user?.fullName}
-        </h2>
+        <h2 className="text-md font-semibold">{authUser?.user?.fullName}</h2>
         <p className="text-sm text-gray-500">
           <span>@</span>
-          {authUser?.data?.user?.username}
+          {authUser?.user?.username}
         </p>
       </div>
       <IoIosArrowDown className="ml-auto" />

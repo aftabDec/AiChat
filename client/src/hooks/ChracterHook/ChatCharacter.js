@@ -1,41 +1,66 @@
 import axios from "axios";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCharacterMessage } from "../../redux/characterSlice";
+import { addCharacterMessage } from "../../redux/characterSlice";
 
 export const useCharacterChatHook = () => {
   const selectedCharacter = useSelector(
     (store) => store.char.selectedCharacter
   );
+  const { authUser } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchCharacterMessage = async () => {
-      try {
-        // Ensure that selectedCharacter exists and has an _id before making the API call
-        if (selectedCharacter?._id) {
-          console.log(
-            `Fetching messages for character ID: ${selectedCharacter._id}`
-          );
+  const sendMessage = async (message) => {
+    try {
+      const token = localStorage.getItem("authToken"); // Replace with your token storage method
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const userId = authUser.user._id;
 
-          const response = await axios.post(
-            `http://localhost:5000/api/v1/chat/${selectedCharacter?._id}`
-          );
-          console.log(response);
-          console.log(response.data, "from selectedChar");
+      // Dispatch the user message to the Redux store
+      dispatch(
+        addCharacterMessage({
+          characterId: selectedCharacter._id,
+          message: {
+            userId,
+            message,
+            timestamp: new Date().toISOString(), // Add a timestamp for sorting
+          },
+        })
+      );
 
-          // Dispatch the messages to the Redux store
-          dispatch(setCharacterMessage([response.data])); // Dispatching only the messages part
-        } else {
-          console.log("No character selected");
-        }
-      } catch (error) {
-        console.error("Error in chat API call:", error.message);
-      }
-    };
+      // Make the API call to send the message
+      const response = await axios.post(
+        `http://localhost:5000/api/v1/chat`,
+        {
+          userId,
+          message,
+          characterId: selectedCharacter._id,
+        },
+        config
+      );
 
-    fetchCharacterMessage();
-  }, [selectedCharacter, dispatch]);
+      const { data } = response;
 
-  // You might not need to return anything if you're only dispatching data
+      // Dispatch the AI's response to the Redux store
+      dispatch(
+        addCharacterMessage({
+          characterId: selectedCharacter._id,
+          message: {
+            userId: selectedCharacter._id,
+            message: data.response || "No response",
+            timestamp: data.timestamp || new Date().toISOString(),
+          },
+        })
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Error in chat API call:", error.message);
+    }
+  };
+
+  return sendMessage;
 };
