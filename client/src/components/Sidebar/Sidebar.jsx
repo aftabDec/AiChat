@@ -70,10 +70,13 @@ const Sidebar = () => {
           </Link>
 
           <div className="right-8 flex flex-col gap-3 relative">
-            <button className="btn md:text-md md:max-w-48 btn-md justify-start text-lg btn-active hover:bg-dark-secondary mx-12 rounded-full">
+            <Link
+              to="/character/new"
+              className="btn md:text-md md:max-w-48 btn-md justify-start text-lg btn-active hover:bg-dark-secondary mx-12 rounded-full"
+            >
               <FiPlus className="text-2xl text-gray-300" />
               Create
-            </button>
+            </Link>
             <button className="btn md:text-md md:max-w-48 justify-start w-52 ml-12">
               <FaRegCompass className="text-2xl text-gray-300" />
               Discover

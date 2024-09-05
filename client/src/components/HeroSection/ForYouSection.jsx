@@ -50,7 +50,7 @@ const ForYouSection = () => {
               <div className="overflow-hidden mb-3">
                 <img
                   src={character?.avatar}
-                  className="w-full h-32 rounded-2xl object-cover"
+                  className="w-full h-40 rounded-lg object-cover"
                   alt={`${character?.name} from  ${character.game}`}
                 />
               </div>

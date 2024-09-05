@@ -19,15 +19,10 @@ export const useGetUserCharacterHook = () => {
   useEffect(() => {
     const fetchUserCharacters = async () => {
       try {
-        if (
-          authUser &&
-          authUser.data &&
-          authUser.data.user &&
-          authUser.data.user._id
-        ) {
+        if (authUser && authUser.user && authUser.user._id) {
           axios.defaults.withCredentials = true;
           const response = await axios.get(
-            `http://localhost:5000/api/v1/character/user/${authUser.data.user._id}`
+            `http://localhost:5000/api/v1/character/user/${authUser.user._id}`
           );
           console.log("Fetched user characters:", response.data);
           dispatch(setUserCharacter(response.data)); // Ensure to pass the correct data

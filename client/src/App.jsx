@@ -5,6 +5,7 @@ import UsernameForm from "./components/Auth/UsernameForm";
 import Chats from "./components/Chats/AllChatsComo/Chats";
 import Contents from "./components/MainContents/Contents";
 import UserCharAllComp from "./components/UserProfile/UserCharAllComp";
+import AllCompo from "./components/Character-creation/All-compo";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { authState } = useAuth();
@@ -34,6 +35,7 @@ function App() {
               <Route path="/" element={<Contents />} />
               <Route path="/chats/:id" element={<Chats />} />
               <Route path="/users/profile" element={<UserCharAllComp />} />
+              <Route path="/character/new" element={<AllCompo />} />
             </Routes>
           </div>
         </div>
