@@ -9,13 +9,19 @@ import Chats from "../Chats/AllChatsComo/Chats";
 
 const Contents = () => {
   return (
-    <div className="flex items-center flex-col h-full w-full max-w-7xl bg-dark-secondary mx-auto overflow-y-auto">
+    <div className="flex flex-col items-center h-full w-full max-w-7xl bg-dark-secondary mx-auto overflow-y-auto">
       <Navbar />
       <HeroSection />
-      <Suspense fallback={<p>loading</p>}>
+      <Suspense
+        fallback={
+          <div className="flex justify-center items-center h-48">
+            <p className="text-dark-accent text-xl">Loading...</p>
+          </div>
+        }
+      >
         <ForYouSection />
       </Suspense>
-      <div className="w-full max-w-4xl">
+      <div className="w-full px-4 max-w-4xl mb-8">
         <ListCarousal />
       </div>
       <C_footer />

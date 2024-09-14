@@ -29,23 +29,21 @@ const ListCarousal = () => {
   }, []);
 
   return (
-    <div className="relative ">
+    <div className="relative">
       {showLeftShadow && <ShadowBar position="left" />}
       {showRightShadow && <ShadowBar position="right" />}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex items-center overflow-x-auto  rounded-md p-4 w-full space-x-2"
+        className="flex items-center overflow-x-auto p-4 space-x-2 scrollbar-hide"
       >
         {categories.map((category, index) => (
-          <div
+          <button
             key={index}
-            className="flex flex-shrink-0 justify-center items-center"
+            className="btn rounded-2xl bg-dark-primary hover:text-white hover:bg-zinc-800 transition-all ease-in-out"
           >
-            <button className="btn rounded-2xl bg-dark-primary hover:text-white textarea-ghost hover:bg-zinc-800">
-              {category}
-            </button>
-          </div>
+            {category}
+          </button>
         ))}
       </div>
     </div>

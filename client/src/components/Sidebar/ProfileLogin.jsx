@@ -3,11 +3,10 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const ProfileLogin = () => {
   return (
-    <>
-      <div className="btn text-lg text-gray-3a00 items-center justify-center bg-dark-secondary border-none relative min-w-[14rem] min-h-[60px] m-2 btn-md ">
-        Login
-      </div>
-    </>
+    <div className="btn bg-indigo-600 text-zinc-300 text-lg min-w-[14rem] min-h-[60px] flex items-center justify-center rounded-md hover:bg-indigo-500">
+      Login
+      <IoIosArrowDown className="ml-2" />
+    </div>
   );
 };
 

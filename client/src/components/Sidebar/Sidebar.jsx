@@ -6,9 +6,7 @@ import Profile from "./Profile";
 import ProfileOptions from "./ProfileOptions";
 import { Link, useNavigate } from "react-router-dom";
 import ProfileLogin from "./ProfileLogin";
-import Login from "../Auth/Login"; // Import Login component
-import Register from "../Auth/form";
-
+import Login from "../Auth/Login";
 import api from "../../utils/axiosSetup";
 import { useSelector } from "react-redux";
 
@@ -18,19 +16,8 @@ const Sidebar = () => {
 
   const closeOptionsRef = useRef();
   const navigate = useNavigate();
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await api.get("/protected-endpoint");
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data",);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
   const { authUser } = useSelector((store) => store.user);
+
   const profileHandle = () => {
     setShowProfileGroup((prev) => !prev);
   };
@@ -54,56 +41,51 @@ const Sidebar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <>
       {showForm && (
-        <div>
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <Login onClose={showFormHandle} />
         </div>
       )}
-      <div className="w-64 items-center bg-dark-primary p-4 flex flex-col">
-        <div className="flex items-center flex-col mb-5 w-full bg-dark-primary text-white">
-          <Link to="/">
-            <h1 className="font-semibold cursor-pointer text-2xl m-8">
-              fictional.ai
-            </h1>
+      <div className="w-64 bg-dark-primary text-white p-4 flex flex-col space-y-6">
+        <Link to="/" className="text-2xl font-semibold mb-8">
+          fictional.ai
+        </Link>
+        <div className="flex flex-col space-y-4">
+          <Link
+            to="/character/new"
+            className="btn w-44 btn-md text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 text-zinc-300"
+          >
+            <FiPlus className="text-2xl" />
+            Create
           </Link>
-
-          <div className="right-8 flex flex-col gap-3 relative">
-            <Link
-              to="/character/new"
-              className="btn md:text-md md:max-w-48 btn-md justify-start text-lg btn-active hover:bg-dark-secondary mx-12 rounded-full"
-            >
-              <FiPlus className="text-2xl text-gray-300" />
-              Create
-            </Link>
-            <button className="btn md:text-md md:max-w-48 justify-start w-52 ml-12">
-              <FaRegCompass className="text-2xl text-gray-300" />
-              Discover
-            </button>
-            <p className="relative h-0 left-12">Chats</p>
-          </div>
-
-          <div className="flex h-72 flex-col items-center bg-dark-primary">
-            <RecentChat />
-          </div>
+          <button className="btn btn-md text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 text-zinc-300">
+            <FaRegCompass className="text-2xl" />
+            Discover
+          </button>
+          <p className="text-zinc-300">Chats</p>
+        </div>
+        <div className="flex flex-col flex-1 overflow-y-auto">
+          <RecentChat />
         </div>
         <div
           ref={closeOptionsRef}
-          className={`transition-all absolute mx-4 z-10 bottom-28 duration-300 ease-in-out ${
-            showProfileGroup ? "opacity-100" : "invisible opacity-0"
-          } overflow-hidden`}
+          className={`absolute bottom-24 transition-opacity duration-300 ${
+            showProfileGroup ? "opacity-100" : "opacity-0 invisible"
+          }`}
         >
           <ProfileOptions onClosed={() => setShowProfileGroup(false)} />
         </div>
-        <div className="fixed block bottom-0 mb-8">
+        <div className="fixed bottom-8 ">
           {authUser ? (
             <button type="button" onClick={profileHandle}>
-              <Profile /> {/* Display ProfileLogin if authenticated */}
+              <Profile />
             </button>
           ) : (
             <button type="button" onClick={showFormHandle}>
-              <ProfileLogin /> {/* Display Profile if not authenticated */}
+              <ProfileLogin />
             </button>
           )}
         </div>

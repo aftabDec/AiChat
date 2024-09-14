@@ -13,7 +13,6 @@ const MessageChat = () => {
   const { selectedCharacter } = useSelector((store) => store.char);
   const dispatch = useDispatch();
   const [loadingResponse, setLoadingResponse] = useState(false);
-
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -23,39 +22,27 @@ const MessageChat = () => {
   }, [messages]);
 
   const handleSendMessage = async () => {
+    if (message.trim() === "") return; // Don't send empty messages
     const userMessage = {
       userId: authUser.user._id,
       characterId: selectedCharacter._id,
       message: message,
       timestamp: new Date().toISOString(),
     };
-    console.log(userMessage, "userMessage");
 
-    // Dispatch the user message to the Redux store
     dispatch(addCharacterMessage(userMessage));
     setLoadingResponse(true);
+
     try {
-      // Send message and handle the response
       const response = await sendMessage(message);
-
-      // Log the entire response object to see its structure
-      console.log("API Response:", response);
-
-      // Check the structure of the response data
       if (response && response.data) {
-        console.log("Response Data:", response.data);
-
-        // Ensure response.data is an object
         const responseData = response.data.data;
         const aiMessage = {
-          userId: authUser.user._id,
+          userId: selectedCharacter._id, // Set AI's userId
           message: responseData.response,
           characterId: selectedCharacter._id,
           timestamp: responseData.timestamp || new Date().toISOString(),
         };
-        console.log(aiMessage, "aiMessage");
-
-        // Dispatch the AI message to the Redux store
         dispatch(addCharacterMessage(aiMessage));
       } else {
         console.error("Unexpected response structure:", response);
@@ -68,7 +55,6 @@ const MessageChat = () => {
     setMessage("");
   };
 
-  // Ensure messages is an array before filtering
   const filteredMessages = Array.isArray(messages)
     ? messages.filter(
         (msg) =>
@@ -77,83 +63,107 @@ const MessageChat = () => {
             msg.userId === authUser.user._id)
       )
     : [];
+
   const scrollRef = useRef();
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [filteredMessages]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center"></div>
       <section
         ref={scrollRef}
         className="flex-1 justify-center items-center overflow-y-auto p-4"
       >
         <div className="space-y-5 flex flex-col">
           {Array.isArray(filteredMessages) && filteredMessages.length > 0 ? (
-            filteredMessages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex mx-20 items-start ${
-                  msg.userId === authUser.user._id ? "justify-end" : ""
-                }`}
-              >
-                {msg.userId !== selectedCharacter._id && (
-                  <img
-                    src={selectedCharacter?.avatar}
-                    alt="Character"
-                    className="w-10 object-cover h-10 rounded-full"
-                  />
-                )}
-                <div className="flex flex-row">
-                  {" "}
+            filteredMessages.map((msg) => {
+              const isUserMessage = msg.userId === authUser.user._id;
+
+              return (
+                <div
+                  key={msg._id} // Use a unique ID if available
+                  className={`flex ${
+                    isUserMessage ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  {/* Message Bubble */}
                   <div
-                    className={`mx-1 ${
-                      msg.userId === selectedCharacter._id ? "ml-2" : ""
+                    className={`flex items-center ${
+                      isUserMessage ? "flex-row-reverse" : "flex-row"
                     }`}
                   >
+                    {/* Avatar */}
                     <div
-                      className={`p-3 ml-5 w-[70%] rounded-2xl ${
-                        msg.userId === authUser.user._id
-                          ? "bg-blue-800"
-                          : "bg-gray-600"
+                      className={`flex-shrink-0 ${
+                        isUserMessage ? "ml-2" : "mr-2"
                       }`}
                     >
-                      <p>{msg.message}</p>
+                      <img
+                        src={
+                          isUserMessage
+                            ? authUser.user.avatar
+                            : selectedCharacter.avatar
+                        }
+                        alt={isUserMessage ? "User" : "Character"}
+                        className="w-10 h-10 object-cover rounded-full"
+                      />
                     </div>
-                    <p className="text-sm text-gray-400 mt-1">
-                      {new Date(msg.timestamp).toLocaleTimeString()}
-                    </p>
+                    {/* Chat Bubble */}
+                    <div
+                      className={`max-w-[70%] ${
+                        isUserMessage ? "ml-2" : "mr-2"
+                      }`}
+                    >
+                      <div
+                        className={`p-3 rounded-2xl ${
+                          isUserMessage
+                            ? "bg-blue-800 text-white"
+                            : "bg-gray-600 text-white"
+                        }`}
+                      >
+                        <p>{msg.message}</p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          {new Date(msg.timestamp).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  {msg.userId === authUser.user._id && (
-                    <img
-                      src={authUser.user.avatar}
-                      alt="User"
-                      className="w-10 object-cover h-10 rounded-full"
-                    />
-                  )}
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <p>No messages to display</p>
           )}
-          {/* Show loading animation when loadingResponse is true */}
           {loadingResponse && <MessageLoadingSkeleton />}
+          {error && (
+            <p className="text-red-500">
+              Failed to send message. Please try again.
+            </p>
+          )}
         </div>
       </section>
       <div className="flex my-5 mx-10">
         <input
           type="text"
           value={message}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className="w-full rounded-lg px-3 py-2 border border-gray-300 focus:outline-none focus:border-blue-500"
+          className="w-full rounded-lg px-4 py-3  bg-gray-700 text-white focus:outline-none focus:border-blue-500 transition-colors duration-300"
         />
         <button
-          className="ml-2 py-2 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none"
+          className="ml-3 py-2 px-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none transition-colors duration-300"
           onClick={handleSendMessage}
         >
           Send

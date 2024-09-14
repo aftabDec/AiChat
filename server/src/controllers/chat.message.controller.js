@@ -5,10 +5,11 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Initialize Google Generative AI
-const apiKey =
-  process.env.GEMINI_API_KEY || "AIzaSyCOxdGRuJAPfdMMx57tf4t6JNgD1sE-lzQ";
+const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -43,14 +44,15 @@ const handleChat = asyncHandler(async (req, res) => {
     - If the user begins the conversation with greetings like "Hi," "Hello," "Hey," "Long time no see," or other similar expressions, respond with: "${character.greetings}".
     - If the user don't start the conversation with "hii","hello","hey","yo","long time no see" or any other similar expressions then don't use "${character.greetings}"
     - Avoid using the greeting repeatedly in the same conversation.
-    Guidelines:
-    Guidelines:
+    
+   Guidelines:
     1. Respond to the user based on your persona, traits, and the context provided in the conversation.
     2. Maintain a conversational tone and be mindful of the flow; avoid repeating phrases unless it suits the context.
     3. Stay true to your personality and adapt your responses accordingly.
-    4. **If your personality is ruthless, vulgar, or harsh, do not hesitate to be rude or use vulgar language when appropriate.** Reflect these traits to maintain authenticity.
+    4. If your personality is firm, direct, or harsh, use strong language that is consistent with your character but does not cross into offensive territory.
     5. Only use the greeting if the user starts the conversation with a greeting or introductory phrase.
     6. Always prioritize staying in character, using the given personality traits to guide your responses.
+    7. Aim to provide engaging and dynamic responses that reflect the depth and nuances of your character.
 
     User: ${message}
     ${character.name}:

@@ -1,28 +1,28 @@
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
-
 import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { authUser } = useSelector((store) => store.user);
-  // Check if user is authenticated and user object is present
 
   return (
-    <div className="btn bg-dark-primary border-none relative min-w-[14rem] min-h-[60px] m-2 btn-md justify-start">
-      <div className="avatar placeholder">
-        {/* Use user's avatar if available */}
-        <div className="bg-purple-600 text-neutral-content w-10 rounded-full">
-          <img src={authUser?.user?.avatar} alt="" />
-        </div>
+    <div className="relative flex items-center p-2 bg-dark-secondary text-zinc-300 rounded-lg hover:bg-dark-accent cursor-pointer lg:w-56 md:w-56 sm:56 max-w-xs w-56">
+      <div className="avatar w-12 h-12 rounded-full overflow-hidden mr-3">
+        <img
+          src={authUser?.user?.avatar || "/default-avatar.png"} // Fallback if avatar URL is not available
+          alt="User avatar"
+          className="object-cover w-full h-full"
+        />
       </div>
-      <div className="flex ml-1 flex-col items-center justify-center">
-        <h2 className="text-md font-semibold">{authUser?.user?.fullName}</h2>
-        <p className="text-sm text-gray-500">
-          <span>@</span>
-          {authUser?.user?.username}
-        </p>
+      <div className="flex flex-col truncate">
+        <span className="text-xs sm:text-sm md:text-base lg:text-base xl:text-lg text-zinc-300 font-semibold truncate">
+          {authUser?.user?.fullName || "Username"}
+        </span>
+        <span className="text-sm text-zinc-400 truncate">
+          @{authUser?.user?.username || "username"}
+        </span>
       </div>
-      <IoIosArrowDown className="ml-auto" />
+      <IoIosArrowDown className="ml-auto text-lg" />
     </div>
   );
 };

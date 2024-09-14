@@ -17,17 +17,17 @@ const ProfileChat = () => {
   // Render the profile section
   return (
     <>
-      <section className="flex items-center p-4 bg-dark-secondary">
+      <section className="flex items-center  bg-dark-secondary">
         <div className="flex space-y-2 flex-col items-center justify-center">
           {/* Display character avatar */}
           <img
             src={selectedCharacter?.avatar } // Fallback to a default image if needed
             alt="Character"
-            className="w-14 h-14 object-cover rounded-full"
+            className="w-10 h-10 object-cover rounded-full"
           />
           <div className="ml-4 space-y-2 flex flex-col items-center justify-center">
             {/* Display character name */}
-            <h2 className="text-xl text-gray-200 font-semibold">
+            <h2 className="text-lg text-gray-200 font-semibold">
               {selectedCharacter?.name }
             </h2>
             {/* Display character greetings */}

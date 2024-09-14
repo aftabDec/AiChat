@@ -21,8 +21,15 @@ export const useGetUserCharacterHook = () => {
       try {
         if (authUser && authUser.user && authUser.user._id) {
           axios.defaults.withCredentials = true;
+          const token = localStorage.getItem("authToken");
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
           const response = await axios.get(
-            `http://localhost:5000/api/v1/character/user/${authUser.user._id}`
+            `http://localhost:5000/api/v1/character/user/${authUser.user._id}`,
+            config
           );
           console.log("Fetched user characters:", response.data);
           dispatch(setUserCharacter(response.data)); // Ensure to pass the correct data

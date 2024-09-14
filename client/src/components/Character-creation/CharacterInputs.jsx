@@ -118,7 +118,7 @@ const CharacterInputs = () => {
             value={characterData.personality}
             onChange={handleChange}
             placeholder="Add character personality"
-            maxLength={400}
+            maxLength={5000}
             className="p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full h-24 resize-none"
           />
         </div>
@@ -131,7 +131,7 @@ const CharacterInputs = () => {
             value={characterData.tagline}
             onChange={handleChange}
             placeholder="Add a short tagline of your Character"
-            maxLength={50}
+            maxLength={5000}
             className="p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
           />
         </div>
@@ -143,7 +143,7 @@ const CharacterInputs = () => {
             value={characterData.description}
             onChange={handleChange}
             placeholder="How would your Character describe themselves?"
-            maxLength={500}
+            maxLength={5000}
             className="p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full h-28 resize-none"
           />
         </div>
